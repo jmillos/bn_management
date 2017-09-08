@@ -1,0 +1,15 @@
+<div class="bn-quick-shipping-order">
+	<div id="wc-bonster-shipping-calendar" style="visibility: hidden; width: 920px; height: 0;">
+		<div class="wrap-calendar"></div>
+	</div>
+	
+	<a href="" ng-if="!vm.isAssignedCourier && !vm.errorAssigned" ng-click="vm.assignCourier()" class="page-title-action">Asignar Mensajero</a>
+	<div ng-if="vm.isAssignedCourier" style="margin-bottom: 5px;">
+		La orden de envió fue asignada a <b ng-bind="vm.eventAssigned.courierName"></b> - <i ng-bind="vm.eventAssigned.shippingDateFormat ? vm.eventAssigned.shippingDateFormat:vm.eventAssigned.shippingDate"></i>
+	</div>
+	<div ng-if="vm.errorAssigned" class="error">
+		La orden de envió no pudo ser asignada, intentelo manualmente.
+	</div>
+	<a ng-if="vm.isAssignedCourier || vm.errorAssigned" href="#TB_inline&width=1200&height=550&inlineId=wc-bonster-shipping-calendar" class="thickbox page-title-action">Abrir Agenda</a>
+</div>
+<!--  -->

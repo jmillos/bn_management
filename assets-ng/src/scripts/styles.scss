@@ -1,0 +1,30 @@
+#wc-bonster-shipping .page-title-action {
+	display: block;
+	margin: 17px 5px 0px;
+	text-align:center;
+}
+
+.field-neighborhood {
+	vertical-align: top;
+	.select2-container {
+		display: inline-block !important;
+		width: 100%;
+		outline: 0 none;
+		.select2-choice {
+			height: 41px;
+			line-height: 41px;
+			border-color: #DCDCDC;
+			border-radius: 0;
+		}
+	}
+}
+
+#shipping_postcode {
+	background-color: #EEE;
+}
+
+.select2-drop {
+    &.select2-drop-active {
+        border-color: #DCDCDC !important;
+    }
+}

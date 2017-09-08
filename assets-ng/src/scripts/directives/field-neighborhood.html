@@ -1,0 +1,13 @@
+<p class="field-neighborhood">
+	<!-- {{ vm.neighborhoods | json }} -->
+	<label for="">
+		{{ vm.args.label }} 
+		<abbr class="required" title="obligatorio" ng-if="vm.args.required">*</abbr>
+	</label>
+	<select 
+		class="{{ vm.args.id }}" 
+		ng-model="vm.inputNeighborhood" 
+		ng-change="vm.changeSelect()" 
+		ng-options="opt.label for opt in vm.neighborhoods"></select>
+	<input id="{{ vm.args.id }}" name="{{ vm.args.id }}" ng-value="vm.inputNeighborhood.label" type="hidden" />
+</p>
