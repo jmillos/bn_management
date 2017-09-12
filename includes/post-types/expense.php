@@ -157,7 +157,10 @@ class PT_Expense {
 			'menu_position' => 57,
 			'menu_icon' => 'dashicons-carrot',
 			'rewrite' => array('slug' => __( $this->post_type )),
-			'supports' => array('title', 'excerpt', 'author', 'comments') //,'editor'
+			'supports' => array('title', 'excerpt', 'author', 'comments'), //,'editor'
+            'show_in_rest'       => true,
+      		'rest_base'          => 'bn_expenses',
+      		'rest_controller_class' => 'WP_REST_Posts_Controller',
 		  );
 		  
 		  register_post_type(__( $this->post_type ), $args);

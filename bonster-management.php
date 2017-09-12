@@ -28,6 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 ini_set('display_errors', 2);
 setlocale(LC_ALL, 'es_ES');
 
+require(dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'loader.php');
 require_once('includes/woocommerce/bn-payment-gateways.php');
 require_once('includes/woocommerce/shop-order.php');
 require_once('includes/woocommerce/checkout.php');
@@ -64,6 +65,8 @@ final class Bonster_Management {
 			add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		}
 
+		add_action('acf/init', array($this, 'acf_init'));
+
 		add_action( 'wp_enqueue_scripts', array($this, 'front_script') );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_script' ) );
 	}
@@ -78,6 +81,22 @@ final class Bonster_Management {
 
 	public function plugins_loaded(){
 
+	}
+
+	public function acf_init(){
+		if( function_exists('acf_add_options_page') ) {
+			
+			$option_page = acf_add_options_page(array(
+				'page_title' 	=> 'Configuración Bonster',
+				'menu_title' 	=> 'Configuración',
+				'menu_slug' 	=> 'bonster-settings',
+				'capability' 	=> 'manage_options',
+				'parent_slug'	=> 'bn_config',
+				'position' 		=> 1,
+				'redirect' 		=> false,
+			));
+			
+		}
 	}
 
 	public function front_script(){

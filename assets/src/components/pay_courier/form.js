@@ -15,6 +15,10 @@ class PayCourierForm extends Component {
     //   this.formPost.addEventListener('submit', this.onSubmit.bind(this))
     }
 
+    onSubmit(props){
+        this.props.onSubmit(props)
+    }
+
     preFormatData(){
           let { data } = this.props
 
@@ -32,7 +36,7 @@ class PayCourierForm extends Component {
     render(){
         return (
             <MuiThemeProvider>
-                <div className="row pay-courier-form form-material">
+                <form className="row pay-courier-form form-material" onSubmit={this.props.handleSubmit(this.onSubmit.bind(this))}>
                     <div className="col-md-6">
                         <Field
                           className="input-date"
@@ -57,9 +61,12 @@ class PayCourierForm extends Component {
                           validate={required} />
                     </div>
                     <div className="col-md-6 offset-md-3" style={{ marginTop: 20 }}>
-                        <RaisedButton label="Registrar Pago" primary={true} />
+                        <RaisedButton
+                            type="submit"
+                            label="Registrar Pago"
+                            primary={true} />
                     </div>
-                </div>
+                </form>
             </MuiThemeProvider>
         )
     }

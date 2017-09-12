@@ -9,6 +9,7 @@ import {
 import { dateTimeFormat } from '../lib/utils'
 import { required } from '../lib/form_validators'
 
+import { sendPayCourier } from '../actions/actions_pay_courier'
 import Modal from './common/modal'
 import PayCourierForm from './pay_courier/form'
 
@@ -21,6 +22,14 @@ class PayCourier extends Component {
         this.setState({ displayModal: true }, () => this.refs.modal.show())
     }
 
+    onSubmit(props){
+        this.props.sendPayCourier(1, props)
+            .then(() => {
+                this.refs.modal.hide()
+                // this.setState({ displayModal: true })
+            })
+    }
+
     render(){
         return (
             <div className="pay-courier">
@@ -29,7 +38,9 @@ class PayCourier extends Component {
                 {
                     this.state.displayModal === true ?
                         <Modal ref="modal" sizeClass="modal-xs">
-                            <PayCourierForm data={this.props.data} />
+                            <PayCourierForm
+                                data={this.props.data}
+                                onSubmit={this.onSubmit.bind(this)} />
                         </Modal>:null
                 }
             </div>
@@ -48,7 +59,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({  }, dispatch);
+  return bindActionCreators({ sendPayCourier }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PayCourier)

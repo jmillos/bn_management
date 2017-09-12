@@ -59,6 +59,8 @@ function bn_shop_order_create_box_content(){
 }
 
 function bn_shop_order_save_postdata(){
+    global $post_id;
+    
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         return false;
     }
