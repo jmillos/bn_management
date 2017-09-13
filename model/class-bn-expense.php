@@ -17,6 +17,10 @@ class BN_Expense extends BN_App {
 			'description' => 'Reference of the expense',
 			'type'        => 'string'
 		],
+		'courier_id' => [
+			'description' => 'Courier associated to expense',
+			'type'        => 'string'
+		],
 	];
 
 	public function rest_api_post( $data, $post, $context ) {

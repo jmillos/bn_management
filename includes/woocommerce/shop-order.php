@@ -111,8 +111,18 @@ function bn_shop_order_custom_columns($column){
             $userIdPay = get_post_meta( $post->ID, '_bn_payment_courier', true );
             $userInfo = get_userdata($userId);
             $userInfoPay = get_userdata($userIdPay);
+
+            $depSelected = get_field('pay_courier_department', 'option');
+            $settings = array(
+                'orderId' => $post->ID,
+                'department' => isset($depSelected->post_parent) ? $depSelected->post_parent:$depSelected->ID,
+                'subdepartment' => isset($depSelected->post_parent) ? $depSelected->ID:null,
+            );
+
+            // echo "<pre>"; var_dump(get_field('pay_courier_department', 'option'));die;
+
             if( isset($userInfo->display_name) )
-                echo $userInfo->display_name . '<div class="payCourierComponent" data="{}"></div>';
+                echo $userInfo->display_name . '<div class="payCourierComponent" settings="'.esc_attr(json_encode($settings)).'" data="{}"></div>';
 
             if( isset($userInfoPay->display_name) )
                 echo '<div><small><b>Cobro:</b> '. $userInfoPay->display_name .'</small></div>';
