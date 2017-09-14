@@ -163,6 +163,8 @@ final class Bonster_Management {
 		wp_register_script( 'management_bonster_bundle', self::$adminBundleJsUrl, array('jquery', 'wc-admin-meta-boxes'), self::$version, true );
 		wp_enqueue_script( 'management_bonster_bundle' );
 
+		wp_localize_script( 'management_bonster_bundle', 'wpApiSettings', array( 'root' => esc_url_raw( rest_url() ), 'nonce' => wp_create_nonce( 'wp_rest' ) ) );
+		
 		$params = array(
 	    	'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'bonster_nonce' => wp_create_nonce( 'bonster-management' ),

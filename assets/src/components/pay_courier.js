@@ -23,7 +23,16 @@ class PayCourier extends Component {
     }
 
     onSubmit(props){
-        this.props.sendPayCourier(1, props)
+        const { orderId, department, subdepartment, courier_id, value } = this.props.settings
+        const data = {
+            reference: `#OP${orderId}`,
+            department,
+            subdepartment,
+            courier_id,
+            value,
+            ...props
+        }
+        this.props.sendPayCourier(orderId, data)
             .then(() => {
                 this.refs.modal.hide()
                 // this.setState({ displayModal: true })
@@ -40,6 +49,7 @@ class PayCourier extends Component {
                         <Modal ref="modal" sizeClass="modal-xs">
                             <PayCourierForm
                                 data={this.props.data}
+                                defaultValue={this.props.settings.value}
                                 onSubmit={this.onSubmit.bind(this)} />
                         </Modal>:null
                 }

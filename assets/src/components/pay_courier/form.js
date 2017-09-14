@@ -30,6 +30,10 @@ class PayCourierForm extends Component {
               data.date = date
           }
 
+          if(!data.value){
+              data.value = this.props.defaultValue
+          }
+
           return data
     }
 

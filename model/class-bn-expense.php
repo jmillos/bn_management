@@ -19,7 +19,11 @@ class BN_Expense extends BN_App {
 		],
 		'courier_id' => [
 			'description' => 'Courier associated to expense',
-			'type'        => 'string'
+			'type'        => 'integer'
+		],
+		'value' => [
+			'description' => 'Value of the expense',
+			'type'        => 'number'
 		],
 	];
 

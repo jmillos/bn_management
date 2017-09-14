@@ -1,10 +1,12 @@
 import axios from 'axios'
 
 import { SEND_PAY_COURIER } from './types'
-import { AJAX_URL, BONSTER_NONCE } from '../config'
+import { API_URL, API_NONCE } from '../config'
+
+axios.defaults.headers.common['X-WP-Nonce'] = API_NONCE;
 
 export function sendPayCourier(orderId, data){
-    const request = axios.post(AJAX_URL, data)
+    const request = axios.post(`${API_URL}bn_expenses`, data)
 
     console.log(orderId, data);
 
