@@ -4,6 +4,17 @@ class BN_App {
 	public function __construct(){
         add_action( 'rest_api_init', array($this, 'register_meta_fields') );
         add_filter( 'rest_prepare_' . $this->post_type, array($this, 'rest_api_post'), 10, 3 );
+        add_action( 'rest_insert_' . $this->post_type, array($this, 'rest_insert_post'), 10, 3 );        
+    }
+
+    public function rest_insert_post($post, $request, $creating){
+        if( $creating === true){
+            $args = array(
+                'ID' => $post->ID,
+                'post_status' => 'publish'
+            );
+            wp_update_post( $args );
+        }
     }
 
     // Register Meta fields needed for posts

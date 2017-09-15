@@ -37,23 +37,27 @@ class PT_Purchase_Order {
 	}
 
 	public function before_save_new_post($cleanPost){
-		if( empty($cleanPost['post_title']) )
+		global $post_type;
+
+		if($post_type == $this->post_type && empty($cleanPost['post_title'])){
 			$cleanPost['post_title'] = $this->get_consecutive();
+		}
 
 		return $cleanPost;
 	}
 
 	public function change_default_title( $title ){
-	    $screen = get_current_screen();
-	    if ( $this->post_type == $screen->post_type ){
+		global $post_type;
+
+	    if ( $this->post_type == $post_type ){
 	        $title = $this->get_consecutive();
 	    }
 	    return $title;
 	}
 
 	public function remove_bulk_actions($actions){
-		global $post;
-		if ($post->post_type == $this->post_type) {
+		global $post_type;
+		if ($post_type == $this->post_type) {
 			unset( $actions['inline hide-if-no-js'], $actions['view'], $actions['trash'] );
 		}
 
@@ -81,21 +85,25 @@ class PT_Purchase_Order {
 	}
 
 	public function register_post_status(){
-		register_post_status( 'received', array(
-			'label'                     => __( 'Recibida' ),
-			'public'                    => true,
-			'show_in_admin_all_list'    => true,
-			'show_in_admin_status_list' => true,
-			'label_count'               => _n_noop( 'Recibida <span class="count">(%s)</span>', 'Recibidas <span class="count">(%s)</span>' )
-	    ));
+		global $post_type;
 
-	    register_post_status( 'void', array(
-			'label'                     => __( 'Devuelta' ),
-			'public'                    => true,
-			'show_in_admin_all_list'    => true,
-			'show_in_admin_status_list' => true,
-			'label_count'               => _n_noop( 'Devuelta <span class="count">(%s)</span>', 'Devueltas <span class="count">(%s)</span>' )
-	    ));
+	    if( $this->post_type == $post_type ){
+			register_post_status( 'received', array(
+				'label'                     => __( 'Recibida' ),
+				'public'                    => true,
+				'show_in_admin_all_list'    => true,
+				'show_in_admin_status_list' => true,
+				'label_count'               => _n_noop( 'Recibida <span class="count">(%s)</span>', 'Recibidas <span class="count">(%s)</span>' )
+		    ));
+
+		    register_post_status( 'void', array(
+				'label'                     => __( 'Devuelta' ),
+				'public'                    => true,
+				'show_in_admin_all_list'    => true,
+				'show_in_admin_status_list' => true,
+				'label_count'               => _n_noop( 'Devuelta <span class="count">(%s)</span>', 'Devueltas <span class="count">(%s)</span>' )
+		    ));
+		}
 	}
 
 	public function add_meta_boxes(){
@@ -376,7 +384,11 @@ class PT_Purchase_Order {
 	/* Composition custom column
 	================================================== */
 	public function custom_columns($column){
-	    global $post;
+	    global $post, $post_type;
+
+	    if ( !is_admin() || $this->post_type !== $post_type )
+		    return;
+
 	    switch ($column){
 			case "supplier":
 				$data = maybe_unserialize( get_post_meta( $post->ID, '_bn_purchase_order_data', true ) );

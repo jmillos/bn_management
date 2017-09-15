@@ -25,7 +25,23 @@ class BN_Expense extends BN_App {
 			'description' => 'Value of the expense',
 			'type'        => 'number'
 		],
+		'date' => [
+			'description' => 'Date of the expense',
+			'type'        => 'string',
+			'format'	  => 'date-time'
+		],
+		'order_id' => [
+			'description' => 'Shop order reference of the expense',
+			'type'        => 'number'
+		],
 	];
+
+	public function rest_insert_post($post, $request, $creating){
+		parent::rest_insert_post($post, $request, $creating);
+
+		$orderId = $request->get_param('order_id');
+		update_post_meta($orderId, '_bn_expense', $post->ID);
+	}
 
 	public function rest_api_post( $data, $post, $context ) {
 		$ret = array(
@@ -33,6 +49,8 @@ class BN_Expense extends BN_App {
 			'title'    	 		=> $data->data['title']['rendered'],
 			'department' 		=> $data->data['department'],
 			'subdepartment' 	=> $data->data['subdepartment'],
+			'reference' 		=> $data->data['reference'],
+			'value' 			=> $data->data['value'],
 			'date' 				=> $data->data['date'],
 		);
 

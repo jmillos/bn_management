@@ -37,8 +37,8 @@ class PT_Supplier {
 	}
 
 	public function add_meta_boxes(){
-		global $post;
-		if ($post->post_type == $this->post_type) {
+		global $post_type;
+		if ($post_type == $this->post_type) {
 			echo '
 				<style>
 					#minor-publishing {

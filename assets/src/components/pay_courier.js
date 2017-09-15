@@ -25,6 +25,7 @@ class PayCourier extends Component {
     onSubmit(props){
         const { orderId, department, subdepartment, courier_id, value } = this.props.settings
         const data = {
+            order_id: orderId,
             reference: `#OP${orderId}`,
             department,
             subdepartment,
@@ -32,7 +33,7 @@ class PayCourier extends Component {
             value,
             ...props
         }
-        this.props.sendPayCourier(orderId, data)
+        this.props.sendPayCourier(data)
             .then(() => {
                 this.refs.modal.hide()
                 // this.setState({ displayModal: true })
