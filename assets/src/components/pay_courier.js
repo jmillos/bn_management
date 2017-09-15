@@ -41,12 +41,18 @@ class PayCourier extends Component {
     }
 
     render(){
+        const { linkExpense } = this.props.settings
+
         return (
             <div className="pay-courier">
-                <button type="button" className="btn btn-link" onClick={() => this.displayModal()}>Pagar</button>
+                {
+                    linkExpense ?
+                        <a href={linkExpense} target="_blank">Ver Pago</a>:
+                        <button type="button" className="btn btn-link" onClick={() => this.displayModal()}>Pagar</button>
+                }
 
                 {
-                    this.state.displayModal === true ?
+                    !linkExpense && this.state.displayModal === true ?
                         <Modal ref="modal" sizeClass="modal-xs">
                             <PayCourierForm
                                 data={this.props.data}

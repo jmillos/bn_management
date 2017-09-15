@@ -121,6 +121,11 @@ function bn_shop_order_custom_columns($column){
                 'courier_id' => $userId,
             );
 
+            $expenseId = get_post_meta($post->ID, '_bn_expense', true);
+            if ($expenseId) {
+                $settings['linkExpense'] = get_edit_post_link($expenseId);
+            }
+
             // echo "<pre>"; var_dump(get_field('courier_department', 'option'));die;
 
             if( isset($userInfo->display_name) )
