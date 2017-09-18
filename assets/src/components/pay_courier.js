@@ -41,13 +41,14 @@ class PayCourier extends Component {
     }
 
     render(){
-        const { linkExpense } = this.props.settings
+        let { linkExpense } = this.props.settings
+        linkExpense = linkExpense ? linkExpense:this.props.linkExpense
 
         return (
             <div className="pay-courier">
                 {
                     linkExpense ?
-                        <a href={linkExpense} target="_blank">Ver Pago</a>:
+                        <a href={linkExpense.replace('&amp;', '&')} target="_blank">Ver Pago</a>:
                         <button type="button" className="btn btn-link" onClick={() => this.displayModal()}>Pagar</button>
                 }
 
@@ -71,7 +72,7 @@ PayCourier = reduxForm({
 
 function mapStateToProps(state) {
     return {
-
+        linkExpense: state.payCourier.linkExpense
     };
 }
 

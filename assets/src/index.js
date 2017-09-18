@@ -78,8 +78,9 @@ if(els.length > 0){
         const el = els[i]
 
         const props = Utils.getAttrsFromElement(el)
+        let storeComponent = createStoreWithMiddleware(reducers)
         ReactDOM.render(
-          <Provider store={store}>
+          <Provider store={storeComponent}>
             <MuiThemeProvider muiTheme={muiTheme}>
               <PayCourier {...props} />
             </MuiThemeProvider>

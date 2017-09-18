@@ -4,6 +4,10 @@ class BN_Expense extends BN_App {
 	protected $post_type = 'bn_expense';
 	protected $suffix_meta = '_bn_expense_';
 
+	protected $suffix = '#G';
+
+	protected $consecutive_option = 'consecutive_expenses';
+
 	protected $register_meta_fields = [
 		'department' => [
 			'description' => 'Department section of the expense',
@@ -36,8 +40,20 @@ class BN_Expense extends BN_App {
 		],
 	];
 
+    public function rest_pre_insert($prepared_post, $request){
+    	return $prepared_post;
+    }
+
 	public function rest_insert_post($post, $request, $creating){
 		parent::rest_insert_post($post, $request, $creating);
+
+		if( $creating === true){
+            $args = array(
+                'ID' => $post->ID,
+                'post_title' => $this->suffix . $post->ID,
+            );
+            wp_update_post( $args );
+        }
 
 		$orderId = $request->get_param('order_id');
 		update_post_meta($orderId, '_bn_expense', $post->ID);
@@ -51,6 +67,7 @@ class BN_Expense extends BN_App {
 			'subdepartment' 	=> $data->data['subdepartment'],
 			'reference' 		=> $data->data['reference'],
 			'value' 			=> $data->data['value'],
+			'link' 				=> get_edit_post_link($post->ID),
 			'date' 				=> $data->data['date'],
 		);
 
