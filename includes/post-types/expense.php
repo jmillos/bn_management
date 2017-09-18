@@ -119,6 +119,10 @@ class PT_Expense {
 		$requestData = json_decode(stripslashes($_POST['dataExpense']), true);
 		foreach ($requestData as $key => $value) {
 			update_post_meta( $post_id, $this->suffix_metadata.$key, $value );
+			if($key === 'supplier'){
+				$val = json_decode($value, true);
+				update_post_meta( $post_id, $this->suffix_metadata.'supplier_id', $val['value'] );				
+			}
 		}
 
 		$j = json_decode($requestData['supplier']);
@@ -176,11 +180,17 @@ class PT_Expense {
 
 		if ( $this->post_type === $typenow ) {
 
-			// get couriers with role 'mensajero'
 			$args = array('post_type' => 'bn_department', 'post_parent' => 0, 'numberposts' => -1);
 			$items = get_posts( $args );
 
-			?>
+			wp_dropdown_pages(array(
+				'depth' => 0,
+				'post_type' => 'bn_department',
+				'name' => '_expense_department',
+				'show_option_none' => __('Todos los departamentos'),
+			));
+
+			/* ?>
 			<select name="_expense_department" id="dropdown_expense_department">
 				<option value="">
 					<?php esc_html_e( 'Todos los departamentos' ); ?>
@@ -192,7 +202,7 @@ class PT_Expense {
 				</option>
 				<?php endforeach; ?>
 			</select>
-			<?php
+			<?php */
 		}
 	}
 
@@ -239,9 +249,11 @@ class PT_Expense {
 		global $typenow;
 
 		if ( $this->post_type === $typenow && isset( $_GET['_expense_department'] ) && !empty($_GET['_expense_department']) ) {
+			$filterValue = $_GET['_expense_department'];
+			echo wp_get_post_parent_id($filterValue);die;
 
-			$vars['meta_key']   = '_bn_expense_department';
-			$vars['meta_value'] = wc_clean( $_GET['_expense_department'] );
+			$vars['meta_key']   = wp_get_post_parent_id($filterValue) === 0 ? '_bn_expense_department':'_bn_expense_subdepartment';
+			$vars['meta_value'] = wc_clean( $filterValue );
 		}
 
 		return $vars;

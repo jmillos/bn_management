@@ -40,7 +40,7 @@ function bn_shop_order_columns($columns){
 }
 
 function bn_shop_order_add_box(){
-    add_meta_box( 'wc-bonster-payment-shipping', __( 'Mensajero de Pago' ), 'bn_shop_order_create_box_content', 'shop_order', 'side', 'low' );
+    add_meta_box( 'wc-bonster-payment-shipping', __( 'Mensajero de Cobro' ), 'bn_shop_order_create_box_content', 'shop_order', 'side', 'low' );
 }
 
 function bn_shop_order_create_box_content(){
