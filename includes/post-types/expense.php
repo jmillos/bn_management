@@ -187,6 +187,7 @@ class PT_Expense {
 				'depth' => 0,
 				'post_type' => 'bn_department',
 				'name' => '_expense_department',
+				'selected' => $_GET['_expense_department'],
 				'show_option_none' => __('Todos los departamentos'),
 			));
 
@@ -250,7 +251,7 @@ class PT_Expense {
 
 		if ( $this->post_type === $typenow && isset( $_GET['_expense_department'] ) && !empty($_GET['_expense_department']) ) {
 			$filterValue = $_GET['_expense_department'];
-			echo wp_get_post_parent_id($filterValue);die;
+			// var_dump(wp_get_post_parent_id($filterValue));die;
 
 			$vars['meta_key']   = wp_get_post_parent_id($filterValue) === 0 ? '_bn_expense_department':'_bn_expense_subdepartment';
 			$vars['meta_value'] = wc_clean( $filterValue );
@@ -346,6 +347,8 @@ class PT_Expense {
 		    return;
 
 		$orderby = $query->get('orderby');
+
+		// echo "<pre>", var_dump($query);die;
 
 		switch ($orderby) {
 			case 'department':
