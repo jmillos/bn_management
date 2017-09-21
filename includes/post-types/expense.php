@@ -23,6 +23,8 @@ class PT_Expense {
 		add_filter('post_row_actions', array($this, 'post_row_actions'));
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 30 );
 
+		add_filter( 'parse_query', array($this, 'filter_request_query'));		
+		// add_action( 'restrict_manage_posts', array( $this, 'display_total_report') );		
 		add_filter( 'manage_edit-'.$this->post_type.'_columns', array($this, 'edit_columns') );
 		add_action( 'manage_'.$this->post_type.'_posts_custom_column', array($this, 'custom_columns') );		
 		add_action( 'pre_get_posts', array($this, 'pre_get_posts') );
@@ -31,6 +33,7 @@ class PT_Expense {
 		add_action( 'restrict_manage_posts', array( $this, 'filter_posts_supplier') );
 		add_filter( 'request', array( $this, 'filter_posts_query_by_department' ) );
 		add_filter( 'request', array( $this, 'filter_posts_query_by_supplier' ) );
+
 
 		//Ajax Response
 		// add_action( 'wp_ajax_bn_search_expenses', array($this, 'search_expenses') );	
@@ -170,15 +173,49 @@ class PT_Expense {
 		  register_post_type(__( $this->post_type ), $args);
 	}
 
-	/**
-	 * Add bulk filter for orders by payment method
-	 *
-	 * @since 1.0.0
-	 */
-	public function filter_posts_department() {
-		global $typenow;
+	public function filter_request_query($query){
+		global $post_type;
 
-		if ( $this->post_type === $typenow ) {
+		//modify the query only if it admin and main query.
+		if( !(is_admin() && $query->is_main_query() && $post_type === $query->query['post_type']) ){ 
+			return $query;
+		}
+
+		// $query->query['posts_per_page'] = -1;
+		// echo "<pre>"; var_dump($query->query['posts_per_page']);die;
+		$GLOBALS['last_query_expense'] = $query;
+
+		return $query;
+	}
+
+	public function display_total_report(){
+		global $last_query_expense;
+
+		// echo "<pre>";var_dump($last_query_expense);die;
+		$last_query_expense->query['posts_per_page'] = -1;
+		$the_query = new WP_Query();
+		$posts = $the_query->query($last_query_expense->query);
+		// echo "<pre>";var_dump($posts);die;
+		// The Loop
+		$total = 0;
+		if ( count($posts) ) {
+			// echo '<ul>';
+			foreach ($posts as $key => $p) {
+				$expenseValue = get_post_meta($p->ID, '_bn_expense_value', true);
+				$total += is_numeric($expenseValue) ? (double) $expenseValue:0;
+				// echo '<li>' . $expenseValue . '</li>';
+			 }
+			// echo '</ul>';
+			/* Restore original Post Data */
+			wp_reset_postdata();
+		}
+
+		return number_format($total);
+	}
+
+	public function filter_posts_department($post_type) {
+
+		if ( $this->post_type === $post_type ) {
 
 			$args = array('post_type' => 'bn_department', 'post_parent' => 0, 'numberposts' => -1);
 			$items = get_posts( $args );
@@ -187,9 +224,9 @@ class PT_Expense {
 				'depth' => 0,
 				'post_type' => 'bn_department',
 				'name' => '_expense_department',
-				'selected' => $_GET['_expense_department'],
+				'selected' => isset($_GET['_expense_department']) ? $_GET['_expense_department']:null,
 				'show_option_none' => __('Todos los departamentos'),
-			));
+			));			
 
 			/* ?>
 			<select name="_expense_department" id="dropdown_expense_department">
@@ -287,7 +324,7 @@ class PT_Expense {
 	        "department" => __( 'Departamento' ),
 	        "subdepartment" => __( 'Subdepartamento' ),
 	        "supplier" => __( 'Proveedor' ),
-	        "value" => __( 'Valor' ),
+	        "value" => __( 'Valor <b>(<i>$' . $this->display_total_report() . '</i>)</b>' ),
 	        "date" => __( 'Fecha' ),
 	    );
 
@@ -387,3 +424,9 @@ class PT_Expense {
 }
 
 PT_Expense::instance();
+
+function bn_found_posts($foundPosts, $class){
+	global $wpdb;
+	echo "<pre>"; var_dump($class->get_queried_object());die;
+}
+// add_filter('found_posts', 'bn_found_posts', 10, 2);
