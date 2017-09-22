@@ -1,0 +1,109 @@
+@import 'variables';
+@import 'react-calendar-timeline';
+@import 'modal';
+
+.bn-badge {
+	font-size: 11px;
+	text-transform: uppercase;
+}
+
+.btn-link {
+	background: none;
+	border: 0;
+	color: #0073aa;
+	cursor: pointer;
+	font-size: 11px;
+	margin: 0;
+	padding: 0;
+
+	&:hover {
+		color: #00a0d2;
+	}
+}
+
+.shippingScheduleComponent {
+	.page-title-action {
+		display: block;
+	  width: 100%;
+		margin: 17px 5px 0px;
+		text-align:center;
+	}
+}
+
+.purchase-order {
+	.form-table {
+		margin-top: 20px;
+		.input-sm {
+			font-size: 12px !important;
+			line-height: 13px !important;
+			height: 36px !important;
+			width: 100% !important;
+		}
+
+		.btn-add {
+			text-align: center;
+		}
+
+		.row-item {
+			.btn-delete {
+				padding: 5px 0;
+			}
+		}
+	}
+
+	.wrap-total-order {
+		margin-top: 40px;
+	}
+}
+
+.expense-metabox {
+	padding-bottom: 20px;
+}
+
+.form-material {
+	input,
+	select,
+	textarea {
+		border: 0;
+		box-shadow: none;
+
+		&:focus {
+			border: 0;
+			box-shadow: none;
+		}
+	}
+
+	.input-wrap {
+		width: 100% !important;
+	}
+
+	.input-date {
+		> div {
+			width: 100% !important;
+
+			> label {
+				font-size: 13px !important;
+				transform: scale(1) translate(0px, -24px) !important;
+			}
+		}
+	}
+
+	.input-autocomplete {
+		> div {
+			width: 100% !important;
+		}
+	}
+
+	.input-readonly {
+		color: rgba(0, 0, 0, .87);
+		font-size: 16px;
+		padding: 10px 10px 0;
+		// text-align: center;
+		//
+		.label {
+			color: rgba(0, 0, 0, .29);
+			font-size: 12px;
+			margin-bottom: 13px;
+		}
+	}
+}

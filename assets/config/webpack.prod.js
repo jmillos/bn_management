@@ -1,12 +1,14 @@
 const webpack = require('webpack');
 const path = require('path');
+const webpackMerge = require('webpack-merge');
+const commonConfig = require('./webpack.common.js');
 
-module.exports = {
+module.exports = webpackMerge(commonConfig, {
     output: {
-        path: path.join(__dirname, '/dist'),
-        filename: '[name].[chunkhash].bundle.js',
+        path: path.join(__dirname, '../js'),
+        filename: 'bonster.bundle.js',
         // publicPath: publicPath,
-        sourceMapFilename: '[name].[chunkhash].map'
+        sourceMapFilename: 'bonster.map'
     },
 
     plugins: [
@@ -19,7 +21,8 @@ module.exports = {
             compress: {
                 screw_ie8: true
             },
+            sourceMap: true,
             comments: false
         })
     ]
-}
+})

@@ -44,7 +44,7 @@ final class Bonster_Management {
 
 	public static $version = "0.0.1";
 
-	public static $adminBundleJsUrl = null;
+	protected $baseUrl;
 
 	/**
 	 * The single instance of the class.
@@ -55,7 +55,8 @@ final class Bonster_Management {
 	protected static $_instance = null;
 
 	public function __construct(){
-		self::$adminBundleJsUrl = "http://localhost:8080/bundle.js";
+		$this->baseUrl = 'http://localhost:8080/';
+		// $this->baseUrl = plugins_url('/assets/js/bonster.bundle.js', __FILE__);
 
 		add_action( 'plugins_loaded', array($this, 'plugins_loaded') );
 
@@ -98,17 +99,6 @@ final class Bonster_Management {
 			
 		}
 	}
-
-	public function front_script(){
-		wp_enqueue_style('pickadate.js-default', plugins_url('/assets/vendors/pickadate/themes/default.css', __FILE__), array(), self::$version);
-		wp_enqueue_style('pickadate.js-default.date', plugins_url('/assets/vendors/pickadate/themes/default.date.css', __FILE__), array(), self::$version);
-		wp_enqueue_style('pickadate.js-default.time', plugins_url('/assets/vendors/pickadate/themes/default.time.css', __FILE__), array(), self::$version);
-		wp_enqueue_script( 'pickadate.js-picker', plugins_url('/assets/vendors/pickadate/picker.js', __FILE__), array('jquery'), self::$version, false );
-		wp_enqueue_script( 'pickadate.js-date', plugins_url('/assets/vendors/pickadate/picker.date.js', __FILE__), array('jquery'), self::$version, false );
-		wp_enqueue_script( 'pickadate.js-time', plugins_url('/assets/vendors/pickadate/picker.time.js', __FILE__), array('jquery'), self::$version, false );
-		wp_enqueue_script( 'pickadate.js-translation', plugins_url('/assets/vendors/pickadate/translations/es_ES.js', __FILE__), array('jquery'), self::$version, false );
-	}
-
 	/**
 	 * Register plugin menus
 	 *
@@ -159,19 +149,35 @@ final class Bonster_Management {
 
 	public static function admin_script(){
 		global $post_id;
-		
-		wp_register_script( 'management_bonster_bundle', self::$adminBundleJsUrl, array('jquery', 'wc-admin-meta-boxes'), self::$version, true );
-		wp_enqueue_script( 'management_bonster_bundle' );
 
-		wp_localize_script( 'management_bonster_bundle', 'wpApiSettings', array( 'root' => esc_url_raw( rest_url() ), 'nonce' => wp_create_nonce( 'wp_rest' ) ) );
+		$adminBundleJsUrl 	= $this->baseUrl . 'admin.bonster.bundle.js';
+		
+		wp_enqueue_script( 'admin_bonster_management_bundle', $adminBundleJsUrl, array('jquery', 'wc-admin-meta-boxes'), self::$version, true );
+
+		wp_localize_script( 'admin_bonster_management_bundle', 'wpApiSettings', array( 'root' => esc_url_raw( rest_url() ), 'nonce' => wp_create_nonce( 'wp_rest' ) ) );
 		
 		$params = array(
 	    	'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'search_products_nonce' => wp_create_nonce( 'search-products' ),
 			'bonster_nonce' => wp_create_nonce( 'bonster-management' ),
 			'order_id' => $post_id,
 		);
-		wp_localize_script( 'management_bonster_bundle', 'wc_bonster_admin_meta_boxes', $params );
+		wp_localize_script( 'admin_bonster_management_bundle', 'wc_bonster_admin_meta_boxes', $params );
 	}
+
+	public function front_script(){
+		$bundleJsUrl 		= $this->baseUrl . 'bonster.bundle.js';
+		wp_enqueue_script( 'bonster_management_bundle', $bundleJsUrl, array(), self::$version, true );
+
+		wp_enqueue_style('pickadate.js-default', plugins_url('/assets/vendors/pickadate/themes/default.css', __FILE__), array(), self::$version);
+		wp_enqueue_style('pickadate.js-default.date', plugins_url('/assets/vendors/pickadate/themes/default.date.css', __FILE__), array(), self::$version);
+		wp_enqueue_style('pickadate.js-default.time', plugins_url('/assets/vendors/pickadate/themes/default.time.css', __FILE__), array(), self::$version);
+		wp_enqueue_script( 'pickadate.js-picker', plugins_url('/assets/vendors/pickadate/picker.js', __FILE__), array('jquery'), self::$version, false );
+		wp_enqueue_script( 'pickadate.js-date', plugins_url('/assets/vendors/pickadate/picker.date.js', __FILE__), array('jquery'), self::$version, false );
+		wp_enqueue_script( 'pickadate.js-time', plugins_url('/assets/vendors/pickadate/picker.time.js', __FILE__), array('jquery'), self::$version, false );
+		wp_enqueue_script( 'pickadate.js-translation', plugins_url('/assets/vendors/pickadate/translations/es_ES.js', __FILE__), array('jquery'), self::$version, false );
+	}
+
 
 	/**
 	 * Main Bonster_Management Instance.
