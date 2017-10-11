@@ -79,6 +79,17 @@ class PT_Expense {
 		foreach ($customFields as $key => $value) {
 			$key = str_replace($this->suffix_metadata, '', $key);
 			$data[$key] = isset($value[0]) ? $value[0]:null;
+
+			switch ($key) {
+				case 'courier_id':
+					$user = get_userdata($data[$key]);
+					$data['courier'] = array( 'value' => $data[$key], 'text' => isset($user->data->display_name) ? $user->data->display_name:'' );
+					break;
+				
+				default:
+					# code...
+					break;
+			}
 		}
 
 		echo '<div 
@@ -122,14 +133,22 @@ class PT_Expense {
 		$requestData = json_decode(stripslashes($_POST['dataExpense']), true);
 		foreach ($requestData as $key => $value) {
 			update_post_meta( $post_id, $this->suffix_metadata.$key, $value );
-			if($key === 'supplier'){
-				$val = json_decode($value, true);
-				update_post_meta( $post_id, $this->suffix_metadata.'supplier_id', $val['value'] );				
+
+			switch ($key) {
+				case 'supplier':
+					$val = json_decode($value, true);
+					update_post_meta( $post_id, $this->suffix_metadata.'supplier_id', $val['value'] );
+					break;
+					
+				case 'supplier':
+					$val = json_decode($value, true);
+					update_post_meta( $post_id, $this->suffix_metadata.'supplier_id', $val['value'] );
+					break;
 			}
 		}
 
-		$j = json_decode($requestData['supplier']);
-		update_post_meta( $post_id, $this->suffix_metadata.'supplier_id', $j->value );
+		// $j = json_decode($requestData['supplier']);
+		// update_post_meta( $post_id, $this->suffix_metadata.'supplier_id', $j->value );
 	}
 
 	/* Post types

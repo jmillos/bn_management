@@ -1,3 +1,4 @@
+import moment from 'moment'
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import { bindActionCreators } from 'redux';
@@ -102,6 +103,30 @@ class ExpenseMetabox extends Component {
         this.props.fetchSearchDepartments(key)
     }
 
+    renderSupplier(){
+        return (
+            this.props.data && this.props.data.courier ?
+            <div className="input-readonly">
+                <div className="label">Proveedor</div>
+                <span>{this.props.data.courier.text}</span>
+            </div>
+            :
+            <Field
+              className="input-wrap"
+              name="supplier"
+              component={AutoComplete}
+              hintText="Proveedor"
+              floatingLabelText="Proveedor"
+              openOnFocus
+              filter={MUIAutoComplete.fuzzyFilter}
+              // dataSourceConfig={{ text: 'name', value: 'id' }}
+              onUpdateInput={this.onSearchSuppliers.bind(this)}
+              dataSource={this.props.suppliersFound}
+              withBtnClear={true}
+              validate={required} />
+        )
+    }
+
     render(){
         return (
           <div className="expense-metabox form-material">
@@ -115,6 +140,8 @@ class ExpenseMetabox extends Component {
                         autoOk={true}
                         format={null}
                         DateTimeFormat={dateTimeFormat()}
+                        minDate={moment().startOf('month').toDate()}
+                        maxDate={moment().endOf('month').toDate()}
                         locale="es-CO"
                         hintText="Fecha"
                         floatingLabelText="Fecha"
@@ -131,19 +158,7 @@ class ExpenseMetabox extends Component {
                   </div>
 
                   <div className="col-md-3 input-autocomplete">
-                      <Field
-                        className="input-wrap"
-                        name="supplier"
-                        component={AutoComplete}
-                        hintText="Proveedor"
-                        floatingLabelText="Proveedor"
-                        openOnFocus
-                        filter={MUIAutoComplete.fuzzyFilter}
-                        // dataSourceConfig={{ text: 'name', value: 'id' }}
-                        onUpdateInput={this.onSearchSuppliers.bind(this)}
-                        dataSource={this.props.suppliersFound}
-                        withBtnClear={true}
-                        validate={required} />
+                      {this.renderSupplier()}
                   </div>
               </div>
 

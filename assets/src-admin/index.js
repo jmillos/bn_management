@@ -21,6 +21,10 @@ import PurchaseOrder from './components/purchase_order'
 import ExpenseMetabox from './components/expense_metabox'
 import PayCourier from './components/pay_courier'
 
+/*---- Web Components ----*/
+import './components/hello'
+/*--------------------------------------*/
+
 const muiTheme = getMuiTheme({
     zIndex: {
         layer: 99999,

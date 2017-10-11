@@ -147,7 +147,7 @@ final class Bonster_Management {
 		);*/
 	}
 
-	public static function admin_script(){
+	public function admin_script(){
 		global $post_id;
 
 		$adminBundleJsUrl 	= $this->baseUrl . 'admin.bonster.bundle.js';
