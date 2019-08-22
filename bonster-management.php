@@ -55,8 +55,8 @@ final class Bonster_Management {
 	protected static $_instance = null;
 
 	public function __construct(){
-		$this->baseUrl = 'http://localhost:8080/';
-		// $this->baseUrl = plugins_url('/assets/js/bonster.bundle.js', __FILE__);
+		// $this->baseUrl = 'http://localhost:8080/';
+		$this->baseUrl = plugins_url('/assets/js/', __FILE__);
 
 		add_action( 'plugins_loaded', array($this, 'plugins_loaded') );
 
@@ -86,7 +86,7 @@ final class Bonster_Management {
 
 	public function acf_init(){
 		if( function_exists('acf_add_options_page') ) {
-			
+
 			$option_page = acf_add_options_page(array(
 				'page_title' 	=> 'Configuración Bonster',
 				'menu_title' 	=> 'Configuración',
@@ -96,7 +96,7 @@ final class Bonster_Management {
 				'position' 		=> 1,
 				'redirect' 		=> false,
 			));
-			
+
 		}
 	}
 	/**
@@ -151,11 +151,11 @@ final class Bonster_Management {
 		global $post_id;
 
 		$adminBundleJsUrl 	= $this->baseUrl . 'admin.bonster.bundle.js';
-		
+
 		wp_enqueue_script( 'admin_bonster_management_bundle', $adminBundleJsUrl, array('jquery', 'wc-admin-meta-boxes'), self::$version, true );
 
 		wp_localize_script( 'admin_bonster_management_bundle', 'wpApiSettings', array( 'root' => esc_url_raw( rest_url() ), 'nonce' => wp_create_nonce( 'wp_rest' ) ) );
-		
+
 		$params = array(
 	    	'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'search_products_nonce' => wp_create_nonce( 'search-products' ),

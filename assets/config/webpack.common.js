@@ -2,6 +2,9 @@ const path = require('path');
 const webpack = require('webpack');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+function resolve(dir) {
+    return path.join(__dirname, '..', dir)
+}
 
 module.exports = {
     entry: {
@@ -9,7 +12,7 @@ module.exports = {
         'bonster': './src/index.js'
     },
     output: {
-        path: __dirname,
+        path: path.join(__dirname, '../js'),
         publicPath: '/',
         filename: '[name].bundle.js'
     },
@@ -26,16 +29,19 @@ module.exports = {
     devtool: 'source-map', //'eval-source-map'
 
     module: {
-        loaders: [{
+        rules: [{
                 test: /\.js$/,
                 loader: 'babel-loader',
-                exclude: /node_modules/
+                include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
             },
             {
                 test: /\.css$/,
                 loader: 'style-loader!css-loader'
             },
-            { test: /\.scss$/, loaders: ['style-loader', 'css-loader?sourceMap', 'sass-loader?sourceMap']},
+            {
+                test: /\.scss$/,
+                loaders: ['style-loader', 'css-loader?sourceMap', 'sass-loader?sourceMap']
+            },
             {
                 test: /\.html$/,
                 loader: 'raw-loader'
