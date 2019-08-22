@@ -1,3 +1,6 @@
+import 'babel-polyfill';
+// import '@webcomponents/webcomponentsjs'
+
 import './sass/bootstrap.scss'
 import './sass/main.scss'
 

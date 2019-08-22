@@ -32,7 +32,7 @@
     "jsdom": "^8.1.0",
     "jshint": "^2.9.4",
     "mocha": "^2.4.5",
-    "node-sass": "^4.5.2",
+    "node-sass": "^4.12.0",
     "react-addons-test-utils": "^0.14.7",
     "sass-loader": "^6.0.3",
     "style-loader": "^0.16.1",
@@ -42,6 +42,7 @@
     "webpack-merge": "^4.1.0"
   },
   "dependencies": {
+    "@webcomponents/webcomponentsjs": "^1.0.14",
     "axios": "^0.15.3",
     "babel-polyfill": "^6.23.0",
     "bootstrap": "4.0.0-alpha.6",
@@ -64,6 +65,7 @@
     "redux-form": "^6.8.0",
     "redux-form-material-ui": "^4.3.0",
     "redux-promise": "^0.5.3",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "web-react-components": "^1.2.1"
   }
 }

@@ -78,16 +78,12 @@ class PT_Expense {
 		$data = array();
 		foreach ($customFields as $key => $value) {
 			$key = str_replace($this->suffix_metadata, '', $key);
-			$data[$key] = isset($value[0]) ? $value[0]:null;
+			if($key !== 'courier') $data[$key] = isset($value[0]) ? $value[0]:null;
 
 			switch ($key) {
 				case 'courier_id':
 					$user = get_userdata($data[$key]);
-					$data['courier'] = array( 'value' => $data[$key], 'text' => isset($user->data->display_name) ? $user->data->display_name:'' );
-					break;
-				
-				default:
-					# code...
+					$data['courier'] = json_encode(array( 'value' => $data[$key], 'text' => isset($user->data->display_name) ? $user->data->display_name:'' ));
 					break;
 			}
 		}
@@ -139,7 +135,7 @@ class PT_Expense {
 					$val = json_decode($value, true);
 					update_post_meta( $post_id, $this->suffix_metadata.'supplier_id', $val['value'] );
 					break;
-					
+
 				case 'supplier':
 					$val = json_decode($value, true);
 					update_post_meta( $post_id, $this->suffix_metadata.'supplier_id', $val['value'] );

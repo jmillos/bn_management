@@ -15,6 +15,7 @@ import {
 } from 'redux-form-material-ui'
 import MUIAutoComplete from 'material-ui/AutoComplete'
 import MenuItem from 'material-ui/MenuItem'
+import ReadOnly from './common/readonly'
 // import NumberFormat from 'react-number-format'
 
 import { fetchSearchSuppliers } from '../actions/actions_purchase_order'
@@ -106,10 +107,12 @@ class ExpenseMetabox extends Component {
     renderSupplier(){
         return (
             this.props.data && this.props.data.courier ?
-            <div className="input-readonly">
-                <div className="label">Proveedor</div>
-                <span>{this.props.data.courier.text}</span>
-            </div>
+            <Field
+              className="input-wrap"
+              name="courier"
+              component={ReadOnly}
+              label="Proveedor"
+              valIsJsonString={true} />
             :
             <Field
               className="input-wrap"

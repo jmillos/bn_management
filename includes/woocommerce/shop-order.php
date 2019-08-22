@@ -129,7 +129,7 @@ function bn_shop_order_custom_columns($column){
             // echo "<pre>"; var_dump(get_field('courier_department', 'option'));die;
 
             if( isset($userInfo->display_name) )
-                echo $userInfo->display_name . '<div class="payCourierComponent" settings="'.esc_attr(json_encode($settings)).'" data="{}"></div>';
+                echo $userInfo->display_name . '<my-component></my-component><div class="payCourierComponent" settings="'.esc_attr(json_encode($settings)).'" data="{}"></div>';
 
             if( isset($userInfoPay->display_name) )
                 echo '<div><small><b>Cobro:</b> '. $userInfoPay->display_name .'</small></div>';
