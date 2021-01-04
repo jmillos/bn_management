@@ -44,7 +44,7 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
-    "axios": "^0.15.3",
+    "axios": "^0.21.1",
     "babel-polyfill": "^6.23.0",
     "babel-preset-stage-1": "^6.1.18",
     "bootstrap": "4.0.0-alpha.6",
