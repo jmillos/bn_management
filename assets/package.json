@@ -30,7 +30,7 @@
     "css-loader": "^0.28.11",
     "eventsource-polyfill": "^0.9.6",
     "jquery": "^2.2.1",
-    "jsdom": "^8.1.0",
+    "jsdom": "^16.5.0",
     "jshint": "^2.10.2",
     "mocha": "^2.4.5",
     "node-sass": "^4.5.2",
